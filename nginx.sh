@@ -5,7 +5,7 @@ LOC="$(dirname ${0})"
 
 LIST='/etc/nginx/conf.d/govblock.conf'
 BLOCKER='/etc/nginx/block_gov'
-REDIRECT_URL="${REDIRECT_URL:-http://pastebin.com/raw.php?i=9pabJfqB}"
+REDIRECT_URL="${REDIRECT_URL:-/restrict_access.html;"
 SITES=/etc/nginx/sites-available/*
 
 # create config file with rules
@@ -23,7 +23,8 @@ echo '}' >> "${LIST}"
 # visitors are redirected to $REDIRECT_URL
 echo '# WARNING! This file was generated. Do not change!' > "${BLOCKER}"
 echo 'if ($gov_user = 1) {' >> "${BLOCKER}"
-echo "rewrite ^ ${REDIRECT_URL};" >> "${BLOCKER}"
+echo "#rewrite ^ ${REDIRECT_URL};" >> "${BLOCKER}"
+echo "return 404;" >> "${BLOCKER}"
 echo '}' >> "${BLOCKER}"
 
 # include blocker configuration file from all sites
